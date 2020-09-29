@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+// include UserController
+const RegisterController = require("./controllers/UserController");
+
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== "production") {
@@ -16,6 +19,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
 	res.status(200).json({ message: "hello there!" });
 });
+
+// register new user router
+app.post("/register", RegisterController.store);
 
 try {
 	mongoose.connect(process.env.MONGO_URI, {
