@@ -6,7 +6,7 @@ const User = require("../models/User");
 
 module.exports = {
 	// register new user
-	async store(req, res) {
+	async createUser(req, res) {
 		try {
 			const { firstName, lastName, password, email } = req.body;
 
@@ -30,11 +30,25 @@ module.exports = {
 			}
 
 			return res.status(400).json({
-				message:
-					"This user is already exists. Do you want to continue to login?",
+				message: "This user is already exists. Continue by login?",
 			});
 		} catch (err) {
 			throw Error(`Error have been occured during registration: ${err}`);
+		}
+	},
+
+	// get user by id
+	async getUserById(req, res) {
+		const { userId } = req.params;
+
+		try {
+			const user = await User.findById(userId);
+
+			return res.status(200).json(user);
+		} catch (err) {
+			return res
+				.status(400)
+				.json({ message: `User ID that you are looking for is not exists` });
 		}
 	},
 };
