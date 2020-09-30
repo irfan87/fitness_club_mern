@@ -6,7 +6,7 @@ const User = require("../models/User");
 
 module.exports = {
 	async createEvent(req, res) {
-		const { title, description, price } = req.body;
+		const { title, description, price, sport } = req.body;
 
 		// get userID from the event's header
 		const { user_id } = req.headers;
@@ -24,37 +24,13 @@ module.exports = {
 		const event = await Event.create({
 			title,
 			description,
+			sport,
 			price: parseFloat(price),
 			user: user_id,
 			thumbnail: filename,
 		});
 
 		return res.json(event);
-	},
-
-	async getEventById(req, res) {
-		const { eventId } = req.params;
-		try {
-			const event = await Event.findById(eventId);
-
-			if (event) {
-				return res.status(200).json(event);
-			}
-		} catch (err) {
-			return res.status(400).json({ message: "Event does not exists" });
-		}
-	},
-
-	async getAllEvents(req, res) {
-		try {
-			const events = await Event.find({});
-
-			if (events) {
-				return res.status(200).json(events);
-			}
-		} catch (err) {
-			return res.status(400).json({ message: "Unable to fetch the events" });
-		}
 	},
 
 	async deleteEvent(req, res) {
