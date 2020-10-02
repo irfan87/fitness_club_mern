@@ -1,0 +1,23 @@
+label#eventThumbnail {
+	margin-bottom: 20px;
+	border: 1px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 120px;
+}
+
+label#eventThumbnail input {
+	display: none;
+}
+
+label#eventThumbnail.has-thumbnail {
+	border: 0;
+}
+
+label#eventThumbnail.has-thumbnail img {
+	display: none;
+}
