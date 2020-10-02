@@ -1,11 +1,14 @@
 const express = require("express");
 const multer = require("multer");
 
-// include UserController
+// include all controllers
 const UserController = require("./controllers/UserController");
 const EventController = require("./controllers/EventController");
 const DashboardController = require("./controllers/DashboardController");
 const LoginController = require("./controllers/LoginController");
+const RegistrationController = require("./controllers/RegistrationController");
+const ApprovalController = require("./controllers/ApprovalController");
+const RejectionController = require("./controllers/RejectionController");
 
 // upload multer config file from config folder
 const uploadConfig = require("./config/upload");
@@ -16,15 +19,6 @@ const upload = multer(uploadConfig);
 
 // login controller
 routes.post("/login", LoginController.userLogin);
-
-// TODO: Subscribe controller
-// TODO: Approval controller
-// TODO: Rejection controller
-
-// create routes
-routes.get("/", (req, res) => {
-	res.status(200).json({ message: "hello there!" });
-});
 
 // USER
 // register new user router
@@ -53,5 +47,27 @@ routes.post(
 
 // delete current event
 routes.delete("/event/:eventId", EventController.deleteEvent);
+
+// REGISTRATION
+// registration routes
+routes.post("/registration/:eventId", RegistrationController.create);
+
+//  get all registrations
+routes.get("/registrations", RegistrationController.getRegistrations);
+// get current registration
+routes.get(
+	"/registration/:registrationId",
+	RegistrationController.getRegistrationById
+);
+
+// APPROVAL REGISTRATION
+routes.post(
+	"/registration/:registrationId/approvals",
+	ApprovalController.approvalRegistered
+);
+routes.post(
+	"/registration/:registrationId/rejections",
+	RejectionController.rejectionRegistered
+);
 
 module.exports = routes;
