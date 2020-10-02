@@ -17,7 +17,8 @@ module.exports = {
 			const user = await User.findOne({ email });
 
 			if (!user) {
-				return res.status(400).json({ message: "User does not exists" });
+				// return res.status(400).json({ message: "User does not exists" });
+				return res.json({ message: "User does not exists" });
 			}
 
 			// check the password is same with the hashed password
@@ -32,6 +33,7 @@ module.exports = {
 				return res.status(200).json(userResponse);
 			} else {
 				return res.status(400).json({ message: "Invalid email / password" });
+				// return res.json({ message: "Invalid email / password" });
 			}
 		} catch (err) {
 			throw Error(`Error occured while authenticate is processing: ${err}`);

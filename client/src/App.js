@@ -1,14 +1,16 @@
 import React from "react";
 import "./App.css";
-import MainDashboardPage from "./pages/Dashboard/MainDashboardPage";
-import MainLoginPage from "./pages/Login/MainLoginPage";
+
+// import container from reactstrap
+import { Container } from "reactstrap";
+import Routes from "./Routes";
 
 function App() {
 	return (
-		<div>
-			<MainLoginPage />
-			<MainDashboardPage />
-		</div>
+		<Container>
+			<h1>Exercise Club</h1>
+			<Routes />
+		</Container>
 	);
 }
 
