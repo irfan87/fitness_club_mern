@@ -1,6 +1,14 @@
 // this will show all the events
 import React, { useState, useMemo } from "react";
-import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
+import {
+	Button,
+	Container,
+	Form,
+	FormGroup,
+	Input,
+	Label,
+	Alert,
+} from "reactstrap";
 import Api from "../../services/Api";
 import camera_icon from "../../assets/camera.png";
 
@@ -15,6 +23,9 @@ export default function MainEventPage() {
 	const [sport, setSport] = useState("");
 	const [date, setDate] = useState("");
 
+	// set the error messahge
+	const [errorMessage, setErrorMessage] = useState(false);
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -28,17 +39,28 @@ export default function MainEventPage() {
 		eventData.append("description", description);
 		eventData.append("date", date);
 
-		if (
-			title !== "" &&
-			description !== "" &&
-			price !== "" &&
-			sport !== "" &&
-			date !== "" &&
-			thumbnail !== null
-		) {
-			await Api.post("/event/new", eventData, { headers: { user_id } });
+		try {
+			if (
+				title !== "" &&
+				description !== "" &&
+				price !== "" &&
+				sport !== "" &&
+				date !== "" &&
+				thumbnail !== null
+			) {
+				await Api.post("/event/new", eventData, { headers: { user_id } });
+			} else {
+				setErrorMessage(true);
+				setTimeout(() => {
+					setErrorMessage(false);
+				}, 4000);
+
+				console.log(`Missing required data`);
+			}
+		} catch (err) {
+			console.log(err.message);
+			// throw Error(`Error: ${err}`);
 		}
-		console.log(eventData);
 	};
 	const preview = useMemo(() => {
 		return thumbnail ? URL.createObjectURL(thumbnail) : null;
@@ -47,6 +69,13 @@ export default function MainEventPage() {
 	return (
 		<Container>
 			<h3>Create Event</h3>
+			{errorMessage ? (
+				<Alert className="event-validation" color="danger">
+					Missing required information
+				</Alert>
+			) : (
+				""
+			)}
 			<Form onSubmit={handleSubmit}>
 				<FormGroup>
 					<Label for="eventTitle">Upload Event Thumbnail</Label>
